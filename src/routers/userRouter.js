@@ -2,6 +2,7 @@ const router = require('express').Router()
 const conn = require('../connection/index')
 const multer = require('multer')
 const path = require('path')
+const valid = require('validator')
 const fs = require('fs')
 const bcryptjs = require('bcryptjs')
 
@@ -36,8 +37,11 @@ const upload = multer({
 
 //register user
 router.post('/users', (req,res)=>{
-    let {id, nama, username, email, password, alamat} = req.body
-    let sql = `INSERT INTO users (id, username, nama, email, password, alamat, id_role) VALUES(${id}, '${username}','${nama}', '${email}', '${password}', '${alamat}', 2)`
+    let { nama, username, email, password, alamat} = req.body
+    let sql = `INSERT INTO users (username, nama, email, password, alamat, id_role) VALUES('${username}','${nama}', '${email}', '${password}', '${alamat}', 2)`
+    if(!valid.isEmail(email)) return res.send({error: 'Format email is not valid'})
+    
+    password = bcryptjs.hashSync(password, 8)
 
     conn.query(sql, (err, result)=>{
         if(err) return res.send(err)
