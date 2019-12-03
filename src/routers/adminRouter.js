@@ -4,10 +4,11 @@ const conn = require ('../connection/index')
 
 // add product
 router.post('/admin/product', (req, res)=>{
-    let {nama, description, price}= req.body    
+    
+    let {name, description, price}= req.body    
     let sql = `INSERT INTO products SET ? `
-
-    conn.query(sql, (err, result)=>{
+    let data = req.body
+    conn.query(sql, data, (err, result)=>{
         if(err) return res.send(err)
 
         res.send(result)
@@ -28,6 +29,7 @@ router.delete('/admin/product/:id', (req,res)=>{
 // update product
 router.patch('/admin/product', (req,res)=>{
 
+    let {name, description, price} = req.body
     let sql = `UPDATE product SET`
 
     conn.query(sql, (err, result)=>{
@@ -52,6 +54,17 @@ router.post('/admin/invoices/:id_cart', (req, res)=>{
 })
 
 
-
 // melihat orderan
+router.get('/admin/orders', (req,res)=>{
+
+    let sql= ``
+
+    conn.query(sql, (err, result)=>{
+        if(err) return res.send(err)
+
+        res.send(result)
+    })
+})
+
+
 module.exports = router
