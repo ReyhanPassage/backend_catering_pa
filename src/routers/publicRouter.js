@@ -2,7 +2,7 @@ const router = require('express').Router()
 const conn = require ('../connection/index')
 
 
-//SHOW PRODUCT 
+//SHOW PRODUCT is done
 router.get('/products', (req, res)=>{
 
     let sql = `SELECT * from products`
@@ -14,7 +14,7 @@ router.get('/products', (req, res)=>{
     })
 })
 
-//login user
+//login user is done
 router.post('/login', (req, res)=>{
 
     let {username, password} = req.body

@@ -35,13 +35,15 @@ const upload = multer({
     }
 })
 
-//register user
+
+
+//register user is done
 router.post('/users', (req,res)=>{
-    let { nama, username, email, password, alamat} = req.body
-    let sql = `INSERT INTO users (username, nama, email, password, alamat, id_role) VALUES('${username}','${nama}', '${email}', '${password}', '${alamat}', 2)`
-    if(!valid.isEmail(email)) return res.send({error: 'Format email is not valid'})
-    
+    let { id, nama, username, email, password, alamat} = req.body
     password = bcryptjs.hashSync(password, 8)
+   
+    let sql = `INSERT INTO users (id, username, nama, email, password, alamat, id_role) VALUES( ${id}, '${username}','${nama}', '${email}', '${password}', '${alamat}', 2)`
+    if(!valid.isEmail(email)) return res.send({error: 'Format email is not valid'})
 
     conn.query(sql, (err, result)=>{
         if(err) return res.send(err)
@@ -53,7 +55,6 @@ router.post('/users', (req,res)=>{
 
 
 //update user avatar, name dan email
-
 router.patch('/users/:username', upload.single('avatar'),(req, res) => {
     let sql = `SELECT avatar FROM users WHERE username = '${req.params.username}'`
     let sql2 = `UPDATE users SET ? WHERE username = ?`
@@ -86,10 +87,10 @@ router.patch('/users/:username', upload.single('avatar'),(req, res) => {
 
 })
 
-//user order
+//user Add To Cart bener tapi belum done
 router.post('/order', (req, res)=>{
-    let {username, email, qty} = req.body
-    let sql = `INSERT INTO order (id_user) VALUES ()`
+    let {id, id_order, id_product, tgl_deliver, qty} = req.body
+    let sql = `INSERT INTO detail_order (id, id_order, id_product, tgl_deliver, qty) VALUES (${id}, '${id_order}', ${id_product}, '${tgl_deliver}', ${qty})`
 
     conn.query(sql, (err, result)=>{
 
@@ -100,7 +101,7 @@ router.post('/order', (req, res)=>{
 
 })
 
-//user show cart
+//user show cart is done
 router.get('/cart', (req,res)=>{
 
     let {id} = req.body

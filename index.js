@@ -12,6 +12,7 @@ app.use(express.json())
 
 app.use(publicRouter)
 app.use(userRouter)
+app.use(adminRouter)
 app.get('/', (req, res) => {
     
     res.send(`<h1>Running at ${port}</h1>`)
