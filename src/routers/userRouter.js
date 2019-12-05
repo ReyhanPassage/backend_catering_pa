@@ -117,8 +117,8 @@ router.get('/cart', (req,res)=>{
 //user upload pembayaran
 router.post('/pembayaran', (req, res)=>{
 
-    let {} = req.body
-    let sql = 'INSERT INTO pembayaran VALUES SET ?'
+    let data = req.body
+    let sql = 'INSERT INTO pembayaran SET ?'
 
     conn.query(sql, (err, result)=>{
         if(err) return res.send(err)
