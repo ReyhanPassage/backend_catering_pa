@@ -43,7 +43,7 @@ router.patch('/admin/product/:id', (req,res)=>{
 // add category is done
 router.post('/admin/category', (req, res)=>{
 
-    let sql= `INSERT INTO category SET ?`
+    let sql= `INSERT INTO categories SET ?`
     let data = req.body
 
     conn.query(sql, data, (err, result)=>{
@@ -57,7 +57,7 @@ router.post('/admin/category', (req, res)=>{
 //show category is done
 
 router.get('/admin/category', (req,res)=>{
-    let sql = `SELECT * FROM category`
+    let sql = `SELECT * FROM categories`
 
     conn.query(sql, (err, result)=>{
         if(err) return res.send(err)
@@ -71,7 +71,7 @@ router.get('/admin/category', (req,res)=>{
 // delete category is done
 router.delete('/admin/category/:id_category', (req, res)=>{
 
-    let sql = `DELETE FROM category where id= ${req.params.id_category}`
+    let sql = `DELETE FROM categories where id= ${req.params.id_category}`
 
     conn.query(sql, (err, result)=>{
         if (err) return res.send(err)
@@ -84,7 +84,7 @@ router.delete('/admin/category/:id_category', (req, res)=>{
 router.patch('/admin/category/:id_category', (req, res)=>{
 
     let data = [req.body, req.params.id_category]
-    let sql = `UPDATE category SET ? WHERE id = ? `
+    let sql = `UPDATE categories SET ? WHERE id = ? `
 
     conn.query(sql, data, (err, result)=>{
         if(err) return res.send(err)
@@ -157,16 +157,23 @@ router.post('/admin/invoices/:id_cart', (req, res)=>{
 })
 
 
-// melihat orderan
+// melihat orderan salah query pake next supaya bisa ambil data dari stored procedure terus di tampilin di chart
 router.get('/admin/orders', (req,res)=>{
 
-    let sql= `SELECT * FROM orderan_chart `
-
+    let {namaProd} = req.body
+    let sql= `CALL jml_perhari('${namaProd}', @senin, @selasa, @rabu, @kamis, @jumat,@sabtu,@minggu)`
+    let sql2 = 'SELECT @senin AS SENIN, @selasa AS SELASA, @rabu AS RABU, @kamis AS KAMIS, @jumat AS JUMAT, @sabtu AS SABTU, @MINGGU as MINGGU'
     conn.query(sql, (err, result)=>{
         if(err) return res.send(err)
 
-        res.send(result)
+        conn.query(sql2, (err, result) =>{
+            if (err) return res.send(err)
+
+            res.send(result)
+        })
     })
+
+
 })
 
 

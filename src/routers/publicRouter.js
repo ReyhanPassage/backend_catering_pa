@@ -39,9 +39,6 @@ router.post('/login', (req, res)=>{
     })
 
 
-
-
-
     // let {username, password} = req.body
 
     // const sql = `SELECT id, username, role FROM login WHERE username = '${username}' AND password = '${password}'`
